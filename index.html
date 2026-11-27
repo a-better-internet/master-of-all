@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Master of All</title>
+  <meta name="description" content="A west-coast patchable browser modular built from every part of the Bastl Instruments library: complex oscillator, low pass gates, function generators, drum sequencer, LFOs and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/master.css">
+</head>
+<body>
+  <header id="top">
+    <div class="brand"><h1>MASTER<b>·</b>OF<b>·</b>ALL</h1><small>west coast · bastl · 24-bit</small></div>
+    <div class="grp">
+      <button class="btn power" id="power">▶ POWER</button>
+      <button class="btn" id="panic" title="All notes off + reset all module states (Esc)">PANIC</button>
+    </div>
+    <div class="grp">
+      <button class="btn" id="prev" title="Previous preset">◀</button>
+      <select class="sel" id="presetSel" title="Presets"></select>
+      <button class="btn" id="next" title="Next preset">▶</button>
+    </div>
+    <div class="grp">
+      <button class="btn" id="save" title="Save the current patch as a user preset (stored in this browser)">SAVE</button>
+      <button class="btn" id="del" title="Delete the selected user preset">DEL</button>
+      <button class="btn" id="export" title="Download the current patch as a .json file">EXPORT</button>
+      <button class="btn" id="import" title="Load presets from .json files">IMPORT</button>
+      <input type="file" id="importFile" accept=".json,application/json" multiple hidden>
+    </div>
+    <div class="grp">
+      <button class="btn rec" id="rec" title="Record the master output to a 24-bit stereo WAV">● REC</button>
+      <span class="readout" id="recTime">00:00</span>
+      <div class="takes">
+        <button class="btn" id="takesBtn" title="Recorded takes">TAKES <span id="takesN">0</span></button>
+        <div class="takes-list" id="takesList"><div class="empty">No recordings yet</div></div>
+      </div>
+    </div>
+    <div class="grp">
+      <button class="btn" id="cablesBtn" title="Cable visibility: on / dim / hidden">CABLES</button>
+      <select class="sel" id="latency" title="Audio buffer size: larger = safer against dropouts">
+        <option value="interactive">buffer: low</option>
+        <option value="balanced">buffer: balanced</option>
+        <option value="playback">buffer: safe</option>
+      </select>
+      <span class="readout" title="DSP load"><span id="loadMeter"><i></i></span> <span id="loadTxt">—</span></span>
+      <span class="readout" id="midiTxt" title="Web MIDI">MIDI —</span>
+      <button class="btn" id="helpBtn">?</button>
+    </div>
+  </header>
+  <div id="info"><span class="pcat" id="pcat"></span><span class="pname" id="pname"></span><span class="pnotes" id="pnotes"></span><span id="status"></span></div>
+  <div id="rackWrap"><div id="rack"></div></div>
+
+  <div id="splash">
+    <div class="card">
+      <h2>MASTER<b>·</b>OF<b>·</b>ALL</h2>
+      <p>A west-coast patchable modular built from every part of the Bastl Instruments library: the Trinity MONO FM, POLY and DRUM engines, the 6-track SQNCR, lfoExtended, the EarLevel exponential envelopes, the arpeggiator, tap tempo and the uncertainty buffer. It adds a complex oscillator, vactrol low pass gates, tape echo and reverb.</p>
+      <p>36 presets, including a bank of homages to the Latin American electronic and noise scenes of the 70s and 80s. Drag from any jack to another to patch. Save your own presets and record 24-bit WAV.</p>
+      <button class="btn big" id="splashPower">▶ POWER ON</button>
+    </div>
+  </div>
+
+  <div id="help"><div class="card">
+    <button class="btn" id="helpClose" style="float:right">CLOSE</button>
+    <h2 style="margin-top:0;letter-spacing:.15em">HOW TO PLAY</h2>
+    <h3>PATCHING</h3>
+    <p>Drag from an output (dark jack) to an input, or from an input to an output. Drag a patched input away to pull its cable; click a cable to delete it. An input takes one cable; an output can feed many. A small dot on an input means it is <b>normalled</b> — something useful is connected internally until you patch over it (e.g. the drum voices listen to the SQNCR, the oscillators listen to the touch plate, the sequencers listen to the CLOCK). Feedback loops are allowed.</p>
+    <p>Jack colours: <span style="color:var(--k-audio)">amber = audio</span>, <span style="color:var(--k-cv)">cyan = control voltage</span>, <span style="color:var(--k-gate)">pink = gates/triggers</span>, <span style="color:var(--k-pitch)">green = pitch</span>. Signal conventions: audio ±1, CV 0…1 or ±1, pitch 1.0 per octave, gates &gt; 0.4 (amplitude carries velocity). Modules not reaching the OUTPUT are skipped by the engine (shown as <i>idle</i>).</p>
+    <h3>CONTROLS</h3>
+    <table>
+      <tr><td>Knobs</td><td>drag up/down · <kbd>Shift</kbd> = fine · mouse wheel · double-click = default</td></tr>
+      <tr><td>Selectors</td><td>click = next · <kbd>Shift</kbd>-click or right-click = previous</td></tr>
+      <tr><td>Keys</td><td><kbd>A W S E D F T G Y H U J K O L P ;</kbd> play notes · <kbd>Z</kbd>/<kbd>X</kbd> octave · <kbd>1</kbd>–<kbd>6</kbd> drum pads · <kbd>Space</kbd> run/stop · <kbd>Enter</kbd> tap tempo · <kbd>Esc</kbd> panic</td></tr>
+      <tr><td>Touch plate</td><td>press lower on a pad for more pressure (PRESS output)</td></tr>
+      <tr><td>MIDI</td><td>notes from all inputs; MIDI clock / start / stop drive the CLOCK (MIDIStepper); CC1 = pressure</td></tr>
+    </table>
+    <h3>SQNCR (drum sequencer)</h3>
+    <p>6 instruments × 8 patterns × 64 steps × 4 substeps (64th notes). Choose an edit mode, then click steps: <b>HIT</b>, <b>ACC</b>ent, <b>SOFT</b>, <b>RATCH</b>et (×2/×3/×4 64ths), <b>SHIFT</b> (late 32nd, 64th drag, flam), <b>MUTE</b> (keeps the notes), <b>SKIP</b> (inactive steps are jumped over). Each track has its own length (drag the number) for polymeters. T/G toggles TRIGGER or GATE events. Hold <b>LOOP</b> to stutter the current step. <b>REC</b> records the pads/keys 1–6 live with the chosen quantization. <b>MOM</b> makes pattern buttons momentary.</p>
+    <h3>RECORDING</h3>
+    <p>● REC captures the master output after the limiter, sample-accurately inside the audio thread, and saves a 24-bit stereo WAV with TPDF dither at the device sample rate. Takes stay in the TAKES menu until you reload the page.</p>
+    <h3>SIGNAL CHAIN SAFETY</h3>
+    <p>The whole rack runs per-sample in one AudioWorklet with no allocations in the audio loop. Parameters are smoothed, so knob moves don't make zipper noise. Oscillators are band-limited (PolyBLEP, 2× oversampled folding and FM), DC blockers sit on every output, and the OUTPUT has a true look-ahead peak limiter (ceiling −0.5 dBFS) so nothing clips. A NaN guard resets the engine if a patch ever goes unstable. Preset changes fade out and back in. If your machine stutters, set the buffer to <b>safe</b>.</p>
+    <h3>MODULES ↔ BASTL LIBRARY</h3>
+    <table id="libTable"></table>
+  </div></div>
+  <div id="toast"></div>
+
+  <script src="js/specs.js"></script>
+  <script src="js/patch.js"></script>
+  <script src="js/presets.js"></script>
+  <script src="js/dsp.js"></script>
+  <script src="js/wav.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
