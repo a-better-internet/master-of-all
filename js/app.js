@@ -180,6 +180,16 @@
     idx = (idx + d + list.length) % list.length;
     loadRef(list[idx].ref);
   }
+  var randCount = 0;
+  function randomPatch(mutateIt) {
+    syncArp();
+    var seed = (Date.now() ^ Math.floor(Math.random() * 1e9) ^ (++randCount * 2654435761)) >>> 0;
+    var st = mutateIt ? MP.mutate(app.state, 0.15, seed) : MP.randomize(seed);
+    loadState(st, null, true);
+    app.status(mutateIt ? 'mutated · auto-leveling…' : 'new random patch · auto-leveling…');
+    app.toast(mutateIt ? 'Mutated: ' + st.name : st.name + ' — Shift-click RANDOM to mutate, SAVE to keep');
+  }
+  app.randomPatch = randomPatch;
   function saveUser() {
     syncArp();
     var name = prompt('Preset name:', (app.state.name || 'My patch').replace(/ \*$/, ''));
@@ -402,6 +412,7 @@
     else if (k >= '1' && k <= '6') { app.pad(+k - 1, true); }
     else if (k === ' ') { e.preventDefault(); var v = app.state.params.clock.run > 0.5 ? 0 : 1; app.onParam('clock', 'run', v); app.ui.setParamUI('clock', 'run', v); app.status(v ? 'run' : 'stop'); }
     else if (k === 'Enter') { e.preventDefault(); app.tap(); }
+    else if (k === 'r') { randomPatch(e.shiftKey); }
     else if (k === 'Escape') { panic(); }
   });
   document.addEventListener('keyup', function (e) {
@@ -429,6 +440,7 @@
     $('panic').onclick = panic;
     $('prev').onclick = function () { step(-1); };
     $('next').onclick = function () { step(1); };
+    $('random').onclick = function (e) { randomPatch(e.shiftKey); e.currentTarget.blur(); };
     $('presetSel').onchange = function (e) { loadRef(e.target.value); e.target.blur(); };
     $('save').onclick = saveUser; $('del').onclick = deleteUser; $('export').onclick = exportPreset;
     $('import').onclick = function () { $('importFile').click(); };

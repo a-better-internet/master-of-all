@@ -285,6 +285,191 @@
         ['lpg.out1', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
     },
 
+    {
+      name: 'Size · Synth-Punk DF ’81', cat: LATIN,
+      notes: 'Mexico City no-wave synth punk: a buzzing square-wave bassline at punk tempo over a blown-out drum machine, through a crushed converter.',
+      p: {
+        'clock.bpm': 168, 'clock.mult': 2,
+        'seq.quant': 1, 'seq.range': 1, 'seq.s1': 0, 'seq.s2': 0, 'seq.s3': 0.58, 'seq.s4': 0, 'seq.s5': 0.5, 'seq.s6': 0, 'seq.s7': 0.83, 'seq.s8': 0.25,
+        'cplx.pfreq': 55, 'cplx.mfreq': 55, 'cplx.mtrack': 1, 'cplx.mshape': 1,
+        'fold.gain': 0.3, 'fold.mix': 0.8,
+        'func1.atk': 1, 'func1.rel': 120,
+        'lpg.m1': 1, 'lpg.v1': 0.05, 'lpg.r1': 0.6,
+        'drum.drive': 0.9, 'drum.kd': 0.3, 'drum.hd': 0.06, 'drum.sl': 0.8,
+        'mix.l1': 0.7, 'mix.l2': 0.7,
+        'bits.bits': 9, 'bits.rate': 14000, 'bits.mix': 0.5, 'out.level': 0.76
+      },
+      sq: { k: 'x.x.x.x.x.x.x.x.', s: '....X.......X...', h: 'x.x.x.x.x.x.x.x.', c: '....x.......x...' },
+      c: [['seq.cv', 'cplx.pitch'], ['cplx.mod', 'fold.in'], ['fold.out', 'lpg.in1'], ['seq.trig', 'func1.trig'], ['func1.env', 'lpg.cv1'],
+        ['drum.mix', 'mix.in1'], ['lpg.out1', 'mix.in2'], ['mix.out', 'bits.in'], ['bits.out', 'out.L']]
+    },
+    {
+      name: 'Reyes · Ritual Prehispánico ’85', cat: LATIN,
+      notes: 'Mexican pre-Hispanic electronic ritual: polyrhythmic drums and seed rattles (12 against 16 against 10), a tuned drum walking at random, a folded drone and crackle in a huge space.',
+      p: {
+        'clock.bpm': 84,
+        'drum.kl': 0.8, 'drum.kt': 0.2, 'drum.kd': 0.7, 'drum.tt': 0.3, 'drum.td': 0.6, 'drum.tl': 0.9,
+        'drum.ht': 0.3, 'drum.hd': 0.35, 'drum.hl': 0.45, 'drum.morph': 0, 'drum.bt': 0.35, 'drum.bl': 0.5, 'drum.drive': 0.3,
+        'rand.walk': 0.35, 'rand.chg': 0.6,
+        'cplx.pfreq': 55, 'cplx.mfreq': 82.5, 'cplx.fm': 0.3, 'cplx.tAmt': 0.6,
+        'lfo1.wave': 3, 'lfo1.rate': 0.06, 'lfo1.smooth': 220,
+        'lpg.o2': 0.45, 'lpg.a2': 0, 'lpg.m2': 1, 'lpg.r2': 0.3,
+        'noise.dens': 25,
+        'mix.l1': 0.8, 'mix.l2': 0.6, 'mix.l3': 0.2,
+        'verb.size': 0.95, 'verb.decay': 0.8, 'verb.mix': 0.45, 'out.level': 1.12
+      },
+      sq: { k: 'x.....x...x.....', t: 'x..x.xx..x.x', h: '2.x2.x2.x2.x2.x.', b: 'x..x..x..x' },
+      c: [['rand.step', 'drum.pitch'], ['drum.mix', 'mix.in1'], ['cplx.out', 'lpg.in2'], ['lfo1.uni', 'cplx.timb'], ['lpg.out2', 'mix.in2'],
+        ['noise.crack', 'mix.in3'], ['mix.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
+    },
+    {
+      name: 'Smetak · Plásticas Sonoras', cat: LATIN,
+      notes: 'Bahia’s microtonal instrument-sculptures: unquantized random pitches strike inharmonic FM gongs and a second struck body; nothing lands on a tempered note.',
+      p: {
+        'clock.bpm': 60,
+        'rand.walk': 0.6, 'rand.chg': 0.8, 'rand.gprob': 0.45,
+        'fmv.freq': 130, 'fmv.ratio': 2.76, 'fmv.snap': 0, 'fmv.index': 1.5, 'fmv.iAmt': 0.5, 'fmv.fb': 0.15,
+        'func2.atk': 2, 'func2.rel': 4000, 'func2.cDR': 0.01,
+        'lpg.m1': 1, 'lpg.v1': 0.8, 'lpg.r1': 0.2,
+        'cplx.pfreq': 97, 'cplx.mfreq': 263.3, 'cplx.fm': 0.5, 'cplx.timbre': 0.2,
+        'lpg.m2': 1, 'lpg.v2': 0.7, 'lpg.r2': 0.35,
+        'mix.l1': 0.8, 'mix.l2': 0.6,
+        'delay.time': 0.9, 'delay.fb': 0.35, 'delay.mix': 0.3,
+        'verb.size': 0.9, 'verb.decay': 0.75, 'verb.mix': 0.45, 'out.level': 0.84
+      },
+      sq: { b: 'x....x...x.' },
+      c: [['rand.step', 'fmv.pitch'], ['rand.gate', 'func2.trig'], ['func2.env', 'fmv.idx'], ['func2.env', 'lpg.cv1'], ['fmv.out', 'lpg.in1'],
+        ['cplx.out', 'lpg.in2'], ['sqncr.t6', 'lpg.ping2'], ['lpg.out1', 'mix.in1'], ['lpg.out2', 'mix.in2'],
+        ['mix.out', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
+    },
+    {
+      name: 'Juan Blanco · Habana Electroacústica', cat: LATIN,
+      notes: 'Havana’s electroacoustic studio: ring-modulated sine bursts struck on the son clave, a conga tumbao, and a tape echo looping it all back.',
+      p: {
+        'clock.bpm': 100,
+        'rand.walk': 0.5,
+        'cplx.pfreq': 440, 'cplx.mfreq': 6.6, 'cplx.fm': 0.1,
+        'ring.freq': 613, 'ring.mix': 0.2, 'ring.level': 1,
+        'lpg.m1': 1, 'lpg.v1': 0.55, 'lpg.r1': 0.4,
+        'drum.morph': 0, 'drum.bl': 0.4, 'drum.tt': 0.55, 'drum.tl': 0.7, 'drum.td': 0.35,
+        'mix.l1': 0.6, 'mix.l2': 1, 'mix.master': 1.5,
+        'delay.time': 0.375, 'delay.fb': 0.7, 'delay.wow': 0.5, 'delay.mix': 0.4,
+        'verb.mix': 0.25, 'out.level': 1.0
+      },
+      sq: { b: 'x..x..x...x.x...', t: '..x...xx..x...x.' },
+      c: [['rand.step', 'cplx.pitch'], ['cplx.sine', 'ring.a'], ['ring.out', 'lpg.in1'], ['sqncr.t6', 'lpg.ping1'],
+        ['drum.mix', 'mix.in1'], ['lpg.out1', 'mix.in2'], ['mix.out', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
+    },
+    {
+      name: 'Medellín Punk ’86', cat: LATIN,
+      notes: 'Colombian hardcore: a d-beat at 190, a “guitar” of distorted noise bands tuned by the sequencer, and a folded complex oscillator screaming underneath.',
+      p: {
+        'clock.bpm': 190, 'clock.mult': 1,
+        'drum.drive': 1, 'drum.hd': 0.05, 'drum.kd': 0.3, 'drum.sl': 0.85,
+        'seq.steps': 4, 'seq.quant': 3, 'seq.range': 1, 'seq.s1': 0, 'seq.s2': 0, 'seq.s3': 0.25, 'seq.s4': 0.42,
+        'filt.cut': 900, 'filt.res': 0.6, 'filt.drive': 1,
+        'cplx.pfreq': 82.4, 'cplx.mfreq': 123.5, 'cplx.fm': 0.7, 'cplx.timbre': 0.8,
+        'fold.gain': 0.7,
+        'mix.l1': 0.75, 'mix.l2': 0.6, 'mix.l3': 0.45,
+        'bits.bits': 8, 'bits.rate': 18000, 'bits.mix': 0.6, 'out.level': 0.5
+      },
+      sq: { k: 'x..xx...x..xx...', s: '....x.......x...', h: 'xxxxxxxxxxxxxxxx' },
+      c: [['seq.cv', 'filt.voct'], ['noise.white', 'filt.in'], ['filt.bp', 'mix.in2'], ['seq.cv', 'cplx.pitch'], ['cplx.out', 'fold.in'], ['fold.out', 'mix.in3'],
+        ['drum.mix', 'mix.in1'], ['mix.out', 'bits.in'], ['bits.out', 'out.L']]
+    },
+    {
+      name: 'Brenner · Moog Caraqueño ’73', cat: LATIN,
+      notes: 'Caracas synth-folk: a gliding sawtooth lead arpeggiates in 3/4 over joropo maracas and drum, with a filter envelope on every note.',
+      p: {
+        'clock.bpm': 132, 'clock.mult': 2,
+        'arp.algo': 2, 'arp.latch': 1, 'arp.gate': 0.6,
+        'slew.rise': 25, 'slew.fall': 25, 'slew.mode': 1,
+        'cplx.pfreq': 261.6, 'cplx.mshape': 0.66, 'cplx.mfreq': 261.6, 'cplx.mtrack': 1,
+        'filt.cut': 1200, 'filt.res': 0.55, 'filt.amt': 0.6,
+        'func1.atk': 3, 'func1.rel': 300,
+        'lpg.m1': 1, 'lpg.o1': 0.2, 'lpg.v1': 0.2,
+        'drum.ht': 0.6, 'drum.hd': 0.12, 'drum.hl': 0.5, 'drum.tt': 0.6, 'drum.kl': 0.7,
+        'mix.l1': 0.65, 'mix.l2': 0.8,
+        'delay.time': 0.34, 'delay.fb': 0.35, 'delay.mix': 0.25,
+        'verb.mix': 0.2, 'out.level': 0.53
+      },
+      arp: [62, 65, 69, 72, 74],
+      sq: { k: 'x.....x.....', h: 'x.xx.xx.xx.x', t: '..x..x..x..x' },
+      c: [['arp.pitch', 'slew.in'], ['slew.out', 'cplx.pitch'], ['cplx.mod', 'filt.in'], ['arp.trig', 'func1.trig'], ['func1.env', 'filt.cv'],
+        ['filt.lp', 'lpg.in1'], ['func1.env', 'lpg.cv1'], ['drum.mix', 'mix.in1'], ['lpg.out1', 'mix.in2'],
+        ['mix.out', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
+    },
+    {
+      name: 'Barnabé · Vanguarda Paulista ’80', cat: LATIN,
+      notes: 'São Paulo’s atonal pop vanguard: jagged chromatic lines in random order on a brassy FM voice, over a lurching 15-step beat.',
+      p: {
+        'clock.bpm': 126, 'clock.mult': 1,
+        'seq.quant': 1, 'seq.range': 2, 'seq.dir': 3, 'seq.s1': 0.04, 'seq.s2': 0.46, 'seq.s3': 0.21, 'seq.s4': 0.96, 'seq.s5': 0.33, 'seq.s6': 0.71, 'seq.s7': 0.13, 'seq.s8': 0.58,
+        'fmv.freq': 196, 'fmv.ratio': 1, 'fmv.index': 1, 'fmv.iAmt': 0.5, 'fmv.fb': 0.4,
+        'func2.atk': 6, 'func2.rel': 260,
+        'lpg.m1': 1, 'lpg.v1': 0.15, 'lpg.r1': 0.3,
+        'drum.drive': 0.4,
+        'mix.l1': 0.7, 'mix.l2': 0.8,
+        'verb.mix': 0.22, 'out.level': 0.61
+      },
+      sq: { k: 'x..x.x..x...x.x', s: '...x..x....x..x.', h: 'x.xx.x.xx.x.xx.x' },
+      c: [['seq.cv', 'fmv.pitch'], ['seq.trig', 'func2.trig'], ['func2.env', 'fmv.idx'], ['func2.env', 'lpg.cv1'], ['fmv.out', 'lpg.in1'],
+        ['drum.mix', 'mix.in1'], ['lpg.out1', 'mix.in2'], ['mix.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
+    },
+    {
+      name: 'Kröpfl · Fonología Musical', cat: LATIN,
+      notes: 'Buenos Aires’ university phonology studio: serial pure sine tones against band-filtered noise, each with its own envelope, in a dry small room.',
+      p: {
+        'clock.bpm': 80, 'clock.mult': 1,
+        'seq.quant': 1, 'seq.range': 3, 'seq.dir': 3, 'seq.div': 2,
+        'func1.atk': 4, 'func1.rel': 900,
+        'cplx.pfreq': 130.8,
+        'lpg.m1': 1, 'lpg.v1': 0.3,
+        'filt.cut': 260, 'filt.res': 0.9,
+        'lpg.m2': 1, 'lpg.v2': 0.25, 'lpg.r2': 0.3,
+        'rand.gprob': 0.5,
+        'mix.l1': 0.8, 'mix.l2': 0.8,
+        'delay.time': 0.12, 'delay.fb': 0.2, 'delay.mix': 0.2,
+        'verb.size': 0.4, 'verb.mix': 0.25, 'out.level': 0.86
+      },
+      c: [['seq.cv', 'cplx.pitch'], ['seq.trig', 'func1.trig'], ['func1.env', 'lpg.cv1'], ['cplx.sine', 'lpg.in1'],
+        ['noise.pink', 'filt.in'], ['seq.cv', 'filt.voct'], ['filt.bp', 'lpg.in2'], ['rand.gate', 'lpg.ping2'],
+        ['lpg.out1', 'mix.in1'], ['lpg.out2', 'mix.in2'], ['mix.out', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
+    },
+    {
+      name: 'Cassette Culture · Santiago–Lima ’84', cat: LATIN,
+      notes: 'Home-taped underground traded by mail: drum machine and plucked FM bass dubbed through a stretched cassette (wow), hiss, a lo-fi converter and a dull top end.',
+      p: {
+        'clock.bpm': 112, 'clock.mult': 1,
+        'seq.quant': 3, 'seq.range': 1, 'seq.s1': 0, 'seq.s2': 0.25, 'seq.s3': 0, 'seq.s4': 0.58, 'seq.s5': 0, 'seq.s6': 0.42, 'seq.s7': 0.33, 'seq.s8': 0.25,
+        'fmv.freq': 55, 'fmv.ratio': 1, 'fmv.index': 1.8, 'fmv.fb': 0.2,
+        'lpg.m2': 1, 'lpg.v2': 0.2, 'lpg.r2': 0.3,
+        'mix.l1': 0.7, 'mix.l2': 0.8, 'mix.l3': 0.06,
+        'delay.time': 0.03, 'delay.fb': 0, 'delay.wow': 0.9, 'delay.mix': 0.7,
+        'bits.bits': 11, 'bits.rate': 20000, 'bits.mix': 0.5,
+        'filt.cut': 5500, 'filt.res': 0.1, 'out.level': 0.95
+      },
+      sq: { k: 'x...x...x...x...', s: '....x.......x...', h: '..x...x...x...x.' },
+      c: [['seq.cv', 'fmv.pitch'], ['seq.trig', 'lpg.ping2'], ['fmv.out', 'lpg.in2'], ['drum.mix', 'mix.in1'], ['lpg.out2', 'mix.in2'], ['noise.pink', 'mix.in3'],
+        ['mix.out', 'delay.in'], ['delay.out', 'bits.in'], ['bits.out', 'filt.in'], ['filt.lp', 'out.L']]
+    },
+    {
+      name: 'Del Mónaco · Estudio Caracas', cat: LATIN,
+      notes: 'Venezuela’s first electronic studio: an audio-rate digital oscillator whose XOR bits drift with smooth random, ring-modulated, struck by random gates into deep tape feedback.',
+      p: {
+        'clock.bpm': 70,
+        'rand.chg': 0.6, 'rand.interp': 0.5, 'rand.gprob': 0.8,
+        'lfo1.rate': 300, 'lfo1.wave': 1, 'lfo1.thres': 200, 'lfo1.tmode': 1,
+        'lfo2.rate': 0.13, 'lfo2.wave': 0,
+        'ring.freq': 59, 'ring.mix': 0.3, 'ring.level': 1,
+        'lpg.m1': 1, 'lpg.v1': 0.75, 'lpg.r1': 0.5,
+        'delay.time': 0.55, 'delay.fb': 0.8, 'delay.tone': 0.4, 'delay.mix': 0.45,
+        'verb.size': 0.8, 'verb.mix': 0.35, 'out.level': 1.3
+      },
+      c: [['rand.smooth', 'lfo1.xor'], ['lfo2.bi', 'lfo1.rate'], ['lfo1.bi', 'ring.a'], ['ring.out', 'lpg.in1'], ['rand.gate', 'lpg.ping1'],
+        ['lpg.out1', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
+    },
+
     // ═══════════════════════════════ WEST COAST ═══════════════════════════════
     {
       name: 'Bongo Pings', cat: WEST,

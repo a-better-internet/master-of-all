@@ -365,7 +365,7 @@
     {
       id: 'out', type: 'out', title: 'OUTPUT', lib: 'DC block · look-ahead limiter', w: 3, row: 3,
       params: [
-        p('level', 'LEVEL', 0, 2, 0.8, 'lin')
+        p('level', 'LEVEL', 0, 3, 0.8, 'lin')
       ],
       ins: ['L', 'R'],
       outs: [],

@@ -1452,6 +1452,7 @@ function MASTER_DSP() {
     this.dcl = new DCBlock(); this.dcr = new DCBlock();
     this.yl = 0; this.yr = 0; this.fade = 1; this.fadeT = 1; this.fadeC = tc(0.008);
     this.pkL = 0; this.pkR = 0; this.grMin = 1; this.bad = false;
+    this.alLeft = 0; this.alSum = 0; this.alN = 0; // auto-level measurement
   });
   Out.prototype.reset = function () {
     this.dl.fill(0); this.dr.fill(0); this.req.fill(1); this.held.fill(1); this.hsum = this.N; this.g = 1; this.dcl.reset(); this.dcr.reset();
@@ -1462,7 +1463,19 @@ function MASTER_DSP() {
     if (!(l === l && r === r && Math.abs(l) < 1e6 && Math.abs(r) < 1e6)) { l = 0; r = 0; this.bad = true; }
     this.fade += (this.fadeT - this.fade) * this.fadeC;
     var lv = p[I.level] * this.fade;
-    l = this.dcl.run(l) * lv; r = this.dcr.run(r) * lv;
+    l = this.dcl.run(l); r = this.dcr.run(r);
+    if (this.alLeft > 0) { // measure loudness before the level stage, then set LEVEL for ≈ −16 dBFS RMS
+      this.alSum += l * l + r * r; this.alN += 2;
+      if (--this.alLeft === 0) {
+        var rms = Math.sqrt(this.alSum / this.alN);
+        if (rms > 1e-4) {
+          var nl = Math.round(clamp(0.158 / rms, 0.25, 3) * 100) / 100;
+          this.set('level', nl);
+          this.eng.post({ t: 'param', m: 'out', k: 'level', v: nl });
+        }
+      }
+    }
+    l *= lv; r *= lv;
     var pk = Math.max(Math.abs(l), Math.abs(r));
     var N = this.N, ri = this.ri;
     this.req[ri] = pk > CEIL ? CEIL / pk : 1;
@@ -1603,6 +1616,7 @@ function MASTER_DSP() {
     if (d.arp && d.arp.length) this.by.arp.setNotes(d.arp);
     this.setCables(d.cables || []);
     this.by.clock.doReset(); this.by.sqncr.reset(); this.by.seq.reset();
+    if (d.autoLevel) { this.out.alLeft = Math.round(d.autoLevel * SR); this.out.alSum = 0; this.out.alN = 0; }
   };
   Engine.prototype.msg = function (d) {
     var m;

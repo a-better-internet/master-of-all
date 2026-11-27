@@ -40,7 +40,7 @@ function serve() {
   await page.waitForFunction(() => window.MasterApp && window.MasterApp.ui);
   check(await page.locator('.mod').count() === 26, 'rack has 26 modules');
   const nPresets = await page.evaluate(() => document.querySelectorAll('#presetSel option').length);
-  check(nPresets >= 30, `preset menu lists ${nPresets} presets`);
+  check(nPresets >= 46, `preset menu lists ${nPresets} presets`);
   if (shots) { fs.mkdirSync(shots, { recursive: true }); await page.screenshot({ path: path.join(shots, 'splash.png') }); }
 
   await page.click('#splashPower');
@@ -66,6 +66,25 @@ function serve() {
     if (peak > 0.9441) { ok = false; console.log('  FAIL clipping in ' + name + ' peak ' + peak); }
   }
   check(quiet.length === 0, 'every preset makes sound within 1.5 s' + (quiet.length ? ' — silent: ' + quiet.join(', ') : ''));
+
+  // RANDOM button: new patches are routed, audible, auto-leveled and never clip
+  let randOk = 0, leveled = 0;
+  for (let i = 0; i < 6; i++) {
+    await page.click('#random', { modifiers: i === 5 ? ['Shift'] : [] });
+    let peak = 0;
+    for (let j = 0; j < 32; j++) {
+      await page.waitForTimeout(100);
+      const r = await page.evaluate(() => { const r = window.MasterApp.lastReport; return Math.max(r.pkL, r.pkR); });
+      peak = Math.max(peak, r);
+    }
+    const info = await page.evaluate(() => ({ name: MasterApp.state.name, cables: MasterApp.state.cables.length, level: MasterApp.state.params.out.level }));
+    if (peak > 0.9441) { ok = false; console.log('  FAIL clipping in ' + info.name); }
+    if (peak > 0.003 && info.cables >= 4) randOk++;
+    if (info.level !== 0.8) leveled++;
+    if (i === 5) check(/mutation/.test(info.name), 'Shift-click RANDOM mutates the current patch (' + info.name + ')');
+  }
+  check(randOk === 6, `RANDOM produced ${randOk}/6 audible, patched results`);
+  check(leveled >= 5, `auto-level adjusted the OUTPUT level on ${leveled}/6`);
 
   // patch a cable by dragging
   await page.selectOption('#presetSel', refs.find(r => r.startsWith('f:')) );

@@ -18,8 +18,14 @@ or building, and it works straight from disk (`file://`) or from any static host
   folding). DC blockers are fitted throughout, recursive filters have denormal guards, and the OUTPUT has a
   true look-ahead peak limiter with a −0.5 dBFS ceiling. A NaN guard resets the engine if a patch ever goes
   unstable, and preset changes fade out and back in.
-- **36 factory presets** in four banks: *Latin Noise 70s/80s* (15), *West Coast* (8), *Bastl / Trinity* (8) and
+- **46 factory presets** in four banks: *Latin Noise 70s/80s* (25), *West Coast* (8), *Bastl / Trinity* (8) and
   *Noise & Experimental* (5).
+- **⚄ RANDOM** builds a new patch that is always routed to the output. It picks a voice and a pitch source, adds
+  optional processors, a pinged or enveloped low pass gate and an optional second layer, then echo/reverb and
+  2–5 modulation cables. Drum patterns and knobs are randomized within safe limits. **Shift-click** (or
+  Shift+R) mutates the current patch instead (about 30% of knobs nudged). After either one, the OUTPUT module
+  measures loudness for 2.5 s inside the engine and sets its level to about −16 dBFS RMS. Press SAVE to keep a
+  result.
 - **Your own presets.** SAVE stores a patch in the browser. EXPORT and IMPORT use `.json` files (all knobs,
   cables, the 8 SQNCR patterns and latched ARP notes). Your last session is restored automatically.
 - **24-bit recording.** ● REC captures the master output inside the audio thread, after the limiter, and
@@ -61,22 +67,32 @@ amplitude carries velocity. Jack colours: amber = audio, cyan = CV, pink = gate,
 
 These presets are homages to the techniques and textures of Latin American electronic, electroacoustic and
 underground noise scenes. They don't recreate any recording.
-CLAEM / Di Tella (Buenos Aires), Fernando von Reichenbach's graphic converter, José Vicente Asuar's COMDASUAR
-(Santiago), Jacqueline Nova (Bogotá), Jorge Antunes (Brasília), Quanta's live electronics and Antonio Russek
-(Mexico City), Decibel's *El Poeta del Ruido*, Electrodomésticos (Santiago), Akira S (São Paulo), the curfew-era
-underground, Lima's *subterráneo* and *chicha* scenes, Gabriel Brnčić and César Bolaños.
+
+- **Argentina:** CLAEM / Di Tella (Buenos Aires), Fernando von Reichenbach's graphic converter, Francisco
+  Kröpfl's university phonology studio.
+- **Chile:** José Vicente Asuar's COMDASUAR (Santiago), Electrodomésticos, the curfew-era underground, Gabriel
+  Brnčić.
+- **Mexico:** Quanta's live electronics, Antonio Russek, Decibel's *El Poeta del Ruido*, the synth-punk of Size,
+  Jorge Reyes' pre-Hispanic electronic ritual.
+- **Brazil:** Jorge Antunes (Brasília), Akira S (São Paulo), Walter Smetak's microtonal *plásticas sonoras*
+  (Bahia), Arrigo Barnabé and the Vanguarda Paulista.
+- **Peru:** Lima's *subterráneo* and *chicha* scenes, César Bolaños.
+- **Elsewhere:** Jacqueline Nova (Bogotá), Medellín's 80s punk, Juan Blanco's electroacoustic studio (Havana),
+  Vytas Brenner's Moog folk (Caracas), Alfredo del Mónaco's studio (Caracas), and the cassette culture that
+  carried all of it by mail.
 
 ## Tests
 
 ```bash
-node tests/render-presets.js 8
+node tests/render-presets.js 8 --random 40
 ```
 
 ```bash
 node tests/browser-smoke.js
 ```
 
-`render-presets.js` renders every preset offline through the real DSP engine. It fails on NaN, on any sample
+`render-presets.js` renders every preset offline through the real DSP engine. With `--random 40` it also renders
+40 random patches and a mutation of each. It fails on NaN, on any sample
 above the ceiling, on silence, on DC offset, on a pinned limiter, or on slow rendering.
 
 `browser-smoke.js` drives headless Chromium with Playwright. It powers on, cycles every preset, drag-patches a

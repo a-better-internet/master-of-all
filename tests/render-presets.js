@@ -1,6 +1,7 @@
 /*
  * Offline render of every factory preset through the real DSP engine.
- * Usage: node tests/render-presets.js [seconds] [--wav outdir] [--only substring]
+ * Usage: node tests/render-presets.js [seconds] [--wav outdir] [--only substring] [--random N]
+ *   --random N also renders N randomized patches (seeds 1..N) and a mutation of each
  *
  * Checks per preset:
  *   - no NaN / Infinity
@@ -19,6 +20,7 @@ const args = process.argv.slice(2);
 const seconds = +(args.find(a => /^\d+(\.\d+)?$/.test(a)) || 8);
 const wavDir = args.includes('--wav') ? args[args.indexOf('--wav') + 1] : null;
 const only = args.includes('--only') ? args[args.indexOf('--only') + 1] : null;
+const nRandom = args.includes('--random') ? +args[args.indexOf('--random') + 1] : 0;
 const SR = +(process.env.SR || 48000);
 
 const root = path.join(__dirname, '..', 'js');
@@ -56,11 +58,18 @@ for (const pr of presets) {
   for (const c of pr.c || []) if (!MasterPatch.validCable(c)) { console.log(`  !! ${pr.name}: bad cable ${c}`); failures++; }
 }
 
-for (const pr of presets) {
+const items = presets.map(p => ({ name: p.name, keys: p.keys, st: MasterPatch.fromPreset(p) }));
+for (let i = 1; i <= nRandom; i++) {
+  const st = MasterPatch.randomize(i);
+  items.push({ name: st.name, keys: true, st });
+  const mu = MasterPatch.mutate(st, 0.15, i * 7919);
+  items.push({ name: 'Random #' + i + ' mutated', keys: true, st: mu });
+}
+for (const pr of items) {
   const msgs = [];
   const port = { postMessage: (m) => msgs.push(m) };
   const eng = new Engine(port);
-  const st = MasterPatch.fromPreset(pr);
+  const st = pr.st;
   eng.msg(MasterPatch.toMessage(st));
   const total = Math.round(seconds * SR), B = 128;
   const L = new Float32Array(total), R = new Float32Array(total);
@@ -121,5 +130,5 @@ for (const pr of presets) {
 const pad = (s, n) => String(s).padEnd(n);
 console.log(pad('preset', 40), pad('peak', 7), pad('rms dB', 8), pad('pinned', 8), pad('cpu×rt', 7), pad('mods', 5), 'status');
 for (const r of rows) console.log(pad(r.name, 40), pad(r.peak, 7), pad(r.rms, 8), pad(r.pinned, 8), pad(r.rtf, 7), pad(r.mods, 5), r.ok);
-console.log(`\n${presets.length} presets, ${failures} failure(s), ${seconds}s each @ ${SR} Hz`);
+console.log(`\n${items.length} patches, ${failures} failure(s), ${seconds}s each @ ${SR} Hz`);
 process.exit(failures ? 1 : 0);

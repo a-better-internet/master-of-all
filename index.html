@@ -21,6 +21,7 @@
       <button class="btn" id="prev" title="Previous preset">◀</button>
       <select class="sel" id="presetSel" title="Presets"></select>
       <button class="btn" id="next" title="Next preset">▶</button>
+      <button class="btn" id="random" title="RANDOMIZE: build a brand-new patch (R). Shift-click: mutate the current patch (Shift+R)">⚄ RANDOM</button>
     </div>
     <div class="grp">
       <button class="btn" id="save" title="Save the current patch as a user preset (stored in this browser)">SAVE</button>
@@ -56,7 +57,7 @@
     <div class="card">
       <h2>MASTER<b>·</b>OF<b>·</b>ALL</h2>
       <p>A west-coast patchable modular built from every part of the Bastl Instruments library: the Trinity MONO FM, POLY and DRUM engines, the 6-track SQNCR, lfoExtended, the EarLevel exponential envelopes, the arpeggiator, tap tempo and the uncertainty buffer. It adds a complex oscillator, vactrol low pass gates, tape echo and reverb.</p>
-      <p>36 presets, including a bank of homages to the Latin American electronic and noise scenes of the 70s and 80s. Drag from any jack to another to patch. Save your own presets and record 24-bit WAV.</p>
+      <p>46 presets, including a bank of 25 homages to the Latin American electronic and noise scenes of the 70s and 80s, plus a RANDOM button that builds new patches. Drag from any jack to another to patch. Save your own presets and record 24-bit WAV.</p>
       <button class="btn big" id="splashPower">▶ POWER ON</button>
     </div>
   </div>
@@ -71,7 +72,8 @@
     <table>
       <tr><td>Knobs</td><td>drag up/down · <kbd>Shift</kbd> = fine · mouse wheel · double-click = default</td></tr>
       <tr><td>Selectors</td><td>click = next · <kbd>Shift</kbd>-click or right-click = previous</td></tr>
-      <tr><td>Keys</td><td><kbd>A W S E D F T G Y H U J K O L P ;</kbd> play notes · <kbd>Z</kbd>/<kbd>X</kbd> octave · <kbd>1</kbd>–<kbd>6</kbd> drum pads · <kbd>Space</kbd> run/stop · <kbd>Enter</kbd> tap tempo · <kbd>Esc</kbd> panic</td></tr>
+      <tr><td>Keys</td><td><kbd>A W S E D F T G Y H U J K O L P ;</kbd> play notes · <kbd>Z</kbd>/<kbd>X</kbd> octave · <kbd>1</kbd>–<kbd>6</kbd> drum pads · <kbd>Space</kbd> run/stop · <kbd>Enter</kbd> tap tempo · <kbd>R</kbd> randomize · <kbd>Shift</kbd>+<kbd>R</kbd> mutate · <kbd>Esc</kbd> panic</td></tr>
+      <tr><td>⚄ RANDOM</td><td>builds a new, always-routed patch: a voice with a pitch source, optional processors, a low pass gate (pinged or enveloped), an optional second layer, echo/reverb and 2–5 modulation cables, plus random drum patterns and knobs within safe limits. Shift-click mutates the current patch (≈30% of knobs nudged). The OUTPUT level then auto-adjusts to about −16 dBFS. Like what you hear? Press SAVE.</td></tr>
       <tr><td>Touch plate</td><td>press lower on a pad for more pressure (PRESS output)</td></tr>
       <tr><td>MIDI</td><td>notes from all inputs; MIDI clock / start / stop drive the CLOCK (MIDIStepper); CC1 = pressure</td></tr>
     </table>
