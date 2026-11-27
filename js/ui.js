@@ -20,7 +20,7 @@
   var GATE_RX = /^(gate|trig|ping\d?|clk|rst|reset|q|mult|s16|bar|eoc|eor|t\d|any|loop|ext|sq)$/;
   var PITCH_RX = /^(pitch|voct|mpitch|trans)$/;
   var AUDIO_IN = { in: 1, in1: 1, in2: 1, in3: 1, in4: 1, a: 1, b: 1, L: 1, R: 1, inL: 1, inR: 1, fm: 1 };
-  var AUDIO_OUT = { out: 1, sine: 1, mod: 1, white: 1, pink: 1, bastl: 1, crack: 1, mix: 1, kick: 1, snare: 1, hat: 1, clap: 1, tom: 1, bell: 1, wet: 1, lp: 1, bp: 1, hp: 1, L: 1, R: 1, out1: 1, out2: 1, inv: 1 };
+  var AUDIO_OUT = { out: 1, sine: 1, mod: 1, white: 1, pink: 1, digi: 1, crack: 1, mix: 1, kick: 1, snare: 1, hat: 1, clap: 1, tom: 1, bell: 1, wet: 1, lp: 1, bp: 1, hp: 1, L: 1, R: 1, out1: 1, out2: 1, inv: 1 };
   var NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
   function el(tag, cls, parent, text) {
@@ -112,7 +112,7 @@
     var head = el('div', 'mod-head', m);
     var t = el('span', 'title', head, s.title);
     t.style.color = MOD_COLOR[s.id] || '#fff';
-    el('span', 'lib', head, s.lib).title = 'Bastl library origin: ' + s.lib;
+    el('span', 'lib', head, s.lib).title = s.title + ': ' + s.lib;
     var body = el('div', 'mod-body', m);
     this.mods[s.id] = { el: m, body: body };
     var custom = this['build_' + (s.custom || '')];
@@ -412,7 +412,7 @@
     this.ctrls['sqncr.quant'] = { update: function (v) { q.textContent = 'Q ' + P('quant').options[Math.round(v)]; } };
     q.addEventListener('click', function () { var v = (Math.round(self.app.state.params.sqncr.quant) + 1) % 4; self.app.onParam('sqncr', 'quant', v); self.setParamUI('sqncr', 'quant', v); });
     var loop = el('button', 'mini', bar2, 'LOOP');
-    loop.title = 'Hold to repeat the current step (Player::startLoop)';
+    loop.title = 'Hold to repeat the current step (stutter)';
     this.ctrls['sqncr.loop'] = { update: function (v) { loop.classList.toggle('on', v > 0.5); } };
     loop.addEventListener('pointerdown', function (e) { e.preventDefault(); self.app.onParam('sqncr', 'loop', 1); self.setParamUI('sqncr', 'loop', 1); });
     var lu = function () { if (self.app.state.params.sqncr.loop > 0.5) { self.app.onParam('sqncr', 'loop', 0); self.setParamUI('sqncr', 'loop', 0); } };

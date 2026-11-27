@@ -30,7 +30,7 @@
 
   function lfo(id, title, rate) {
     return {
-      id: id, type: 'lfo', title: title, lib: 'lfoExtended · LFOSimple · LFORandom', w: 2, row: 2,
+      id: id, type: 'lfo', title: title, lib: 'flop · XOR · fold · resolution', w: 2, row: 2,
       params: [
         p('rate', 'RATE', 0.01, 800, rate, 'exp', { unit: ' Hz', dec: 2 }),
         p('wave', 'WAVE', 0, 3, 1, 'enum', { options: VEL }),
@@ -48,7 +48,7 @@
 
   function func(id, title, normals) {
     return {
-      id: id, type: 'func', title: title, lib: 'expADSR (EarLevel)', w: 2, row: 2,
+      id: id, type: 'func', title: title, lib: 'exponential ADSR · hold · cycle', w: 2, row: 2,
       params: [
         p('atk', 'ATTACK', 0.5, 10000, 5, 'exp', { unit: ' ms', dec: 1 }),
         p('dec', 'DECAY', 1, 10000, 250, 'exp', { unit: ' ms', dec: 0 }),
@@ -68,7 +68,7 @@
   var SPECS = [
     // ───────────────────────────── ROW 0 : CONTROL ─────────────────────────────
     {
-      id: 'clock', type: 'clock', title: 'CLOCK', lib: 'BastlMetronome · Tapper · BPMConverter · MIDIStepper', w: 2, row: 0,
+      id: 'clock', type: 'clock', title: 'CLOCK', lib: 'tempo · tap · swing · MIDI sync', w: 2, row: 0,
       params: [
         p('bpm', 'TEMPO', 20, 300, 112, 'lin', { unit: ' bpm', dec: 1 }),
         p('mult', 'MULT', 0, 3, 1, 'enum', { options: ['×1', '×2', '×4', '×8'] }),
@@ -81,7 +81,7 @@
       custom: 'clock'
     },
     {
-      id: 'sqncr', type: 'sqncr', title: 'SQNCR', lib: 'Player · DrumStep · PlayerSettings · StepRecorder · NoVelocityStepMemory · StepSynchronizer', w: 8, row: 0,
+      id: 'sqncr', type: 'sqncr', title: 'SQNCR', lib: '6 tracks · 8 patterns · 64 steps · ratchets', w: 8, row: 0,
       params: [
         p('pattern', 'PATTERN', 0, 7, 0, 'int'),
         p('l1', 'LEN KCK', 1, 64, 16, 'int', { small: true }),
@@ -102,7 +102,7 @@
       custom: 'sqncr'
     },
     {
-      id: 'touch', type: 'touch', title: 'TOUCH PLATE', lib: 'MIDInoteBuffer · Web MIDI · keys', w: 4, row: 0,
+      id: 'touch', type: 'touch', title: 'TOUCH PLATE', lib: 'keys · pressure · MIDI', w: 4, row: 0,
       params: [
         p('oct', 'OCTAVE', -3, 3, 0, 'int'),
         p('glide', 'GLIDE', 0, 1, 0, 'pow')
@@ -112,7 +112,7 @@
       custom: 'touch'
     },
     {
-      id: 'arp', type: 'arp', title: 'ARP', lib: 'Arpeggiator', w: 2, row: 0,
+      id: 'arp', type: 'arp', title: 'ARP', lib: 'up · down · sorted · random', w: 2, row: 0,
       params: [
         p('algo', 'ORDER', 0, 4, 0, 'enum', { options: ['UP', 'DOWN', 'UP/DN', 'SORT', 'RND'] }),
         p('win', 'WINDOW', 1, 20, 20, 'int'),
@@ -126,7 +126,7 @@
       custom: 'arp'
     },
     {
-      id: 'seq', type: 'seq', title: 'SEQUENTIAL VOLTAGE', lib: 'Stepper · mapping', w: 5, row: 2,
+      id: 'seq', type: 'seq', title: 'SEQUENTIAL VOLTAGE', lib: '8 steps · voltage addressed · quantizer', w: 5, row: 2,
       params: [
         p('s1', '1', 0, 1, 0.00, 'lin'), p('s2', '2', 0, 1, 0.25, 'lin'),
         p('s3', '3', 0, 1, 0.50, 'lin'), p('s4', '4', 0, 1, 0.33, 'lin'),
@@ -151,7 +151,7 @@
 
     // ───────────────────────────── ROW 1 : SOURCES ─────────────────────────────
     {
-      id: 'cplx', type: 'cplx', title: 'COMPLEX OSC', lib: 'west coast · Mozzi oscil', w: 4, row: 1,
+      id: 'cplx', type: 'cplx', title: 'COMPLEX OSC', lib: 'FM · AM · timbre folding', w: 4, row: 1,
       params: [
         p('mfreq', 'MOD FREQ', 0.05, 2000, 3, 'exp', { unit: ' Hz', dec: 2 }),
         p('mshape', 'MOD SHAPE', 0, 1, 0, 'lin'),
@@ -170,7 +170,7 @@
       normals: { pitch: 'touch.pitch' }
     },
     {
-      id: 'fmv', type: 'fmv', title: 'MONO FM', lib: 'Trinity MONO FM', w: 3, row: 1,
+      id: 'fmv', type: 'fmv', title: 'MONO FM', lib: '2-operator phase modulation', w: 3, row: 1,
       params: [
         p('freq', 'FREQ', 20, 2000, 55, 'exp', { unit: ' Hz', dec: 1 }),
         p('ratio', 'RATIO', 0.25, 8, 2, 'exp', { dec: 3 }),
@@ -184,7 +184,7 @@
       normals: { pitch: 'touch.pitch' }
     },
     {
-      id: 'poly', type: 'poly', title: 'POLY', lib: 'Trinity POLY · MIDInoteBuffer · expADSR', w: 4, row: 1,
+      id: 'poly', type: 'poly', title: 'POLY', lib: '4 voices · voice stealing', w: 4, row: 1,
       params: [
         p('wave', 'WAVE', 0, 1, 0, 'lin'),
         p('detune', 'DETUNE', 0, 1, 0.2, 'lin'),
@@ -202,7 +202,7 @@
       outs: ['out', 'gate']
     },
     {
-      id: 'drum', type: 'drum', title: 'DRUM', lib: 'Trinity DRUM', w: 6, row: 1,
+      id: 'drum', type: 'drum', title: 'DRUM', lib: '6 synthesized voices', w: 6, row: 1,
       params: [
         p('kt', 'TUNE', 0, 1, 0.5, 'lin', { small: true }), p('kd', 'DECAY', 0, 1, 0.5, 'lin', { small: true }), p('kl', 'LEVEL', 0, 1, 0.9, 'lin', { small: true }),
         p('st', 'TUNE', 0, 1, 0.5, 'lin', { small: true }), p('sd', 'DECAY', 0, 1, 0.4, 'lin', { small: true }), p('sl', 'LEVEL', 0, 1, 0.7, 'lin', { small: true }),
@@ -220,13 +220,13 @@
       custom: 'drum'
     },
     {
-      id: 'noise', type: 'noise', title: 'NOISE', lib: 'bastlRandom (xorshift16)', w: 2, row: 1,
+      id: 'noise', type: 'noise', title: 'NOISE', lib: 'white · pink · digital · crackle', w: 2, row: 1,
       params: [
-        p('rate', 'BASTL RATE', 50, 48000, 4000, 'exp', { unit: ' Hz', dec: 0 }),
+        p('rate', 'DIGI RATE', 50, 48000, 4000, 'exp', { unit: ' Hz', dec: 0 }),
         p('dens', 'CRACKLE', 0.5, 2000, 20, 'exp', { unit: ' /s', dec: 1 })
       ],
       ins: [],
-      outs: ['white', 'pink', 'bastl', 'crack']
+      outs: ['white', 'pink', 'digi', 'crack']
     },
 
     // ───────────────────────────── ROW 2 : MODULATION ─────────────────────────────
@@ -235,7 +235,7 @@
     func('func1', 'FUNCTION 1', { gate: 'touch.gate' }),
     func('func2', 'FUNCTION 2'),
     {
-      id: 'rand', type: 'rand', title: 'UNCERTAINTY', lib: 'interpolatingBuffer · movingAverage', w: 3, row: 2,
+      id: 'rand', type: 'rand', title: 'UNCERTAINTY', lib: 'random walk · loop · interpolate', w: 3, row: 2,
       params: [
         p('chg', 'CHANGE', 0, 1, 1, 'lin'),
         p('walk', 'WALK', 0, 1, 0.25, 'lin'),
@@ -250,7 +250,7 @@
       normals: { clk: 'clock.q' }
     },
     {
-      id: 'slew', type: 'slew', title: 'SLEW', lib: 'MovingAverageLinear', w: 2, row: 2,
+      id: 'slew', type: 'slew', title: 'SLEW', lib: 'slew · moving average · follower', w: 2, row: 2,
       params: [
         p('rise', 'RISE', 0.1, 5000, 50, 'exp', { unit: ' ms', dec: 1 }),
         p('fall', 'FALL', 0.1, 5000, 200, 'exp', { unit: ' ms', dec: 1 }),
@@ -260,7 +260,7 @@
       outs: ['out', 'env']
     },
     {
-      id: 'util', type: 'util', title: 'ATTENUVERT', lib: 'mapping', w: 2, row: 2,
+      id: 'util', type: 'util', title: 'ATTENUVERT', lib: 'scale · offset · sum', w: 2, row: 2,
       params: [
         p('a1', 'SCALE 1', -1, 1, 1, 'lin'),
         p('o1', 'OFFSET 1', -1, 1, 0, 'lin'),
@@ -329,7 +329,7 @@
       outs: ['out', 'inv']
     },
     {
-      id: 'bits', type: 'bits', title: 'MOZZI LO-FI', lib: 'Mozzi 16384 Hz · 8-bit', w: 2, row: 3,
+      id: 'bits', type: 'bits', title: 'LO-FI', lib: 'bit depth · sample rate', w: 2, row: 3,
       params: [
         p('bits', 'BITS', 1, 16, 8, 'lin', { dec: 1 }),
         p('rate', 'RATE', 200, 48000, 16384, 'exp', { unit: ' Hz', dec: 0 }),

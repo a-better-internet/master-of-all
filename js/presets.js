@@ -14,7 +14,7 @@
 (function (root) {
   'use strict';
 
-  var LATIN = 'Latin Noise 70s/80s', WEST = 'West Coast', BASTL = 'Bastl / Trinity', NOISE = 'Noise & Experimental';
+  var LATIN = 'Latin Noise 70s/80s', WEST = 'West Coast', DIGI = 'Digital Machines', NOISE = 'Noise & Experimental';
 
   var P = [
     // ═══════════════════════════════ LATIN NOISE 70s/80s ═══════════════════════════════
@@ -590,23 +590,23 @@
         ['lpg.out1', 'mix.in1'], ['lpg.out2', 'mix.in2'], ['mix.out', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
     },
 
-    // ═══════════════════════════════ BASTL / TRINITY ═══════════════════════════════
+    // ═══════════════════════════════ DIGITAL MACHINES ═══════════════════════════════
     {
-      name: 'Trinity DRUM · Basic Beat', cat: BASTL,
-      notes: 'The DRUM engine played by the SQNCR as on the original Trinity: accents, soft notes, 64th ratchets and swing.',
+      name: 'DRUM · Basic Beat', cat: DIGI,
+      notes: 'The DRUM engine played by the SQNCR: accents, soft notes, 64th ratchets and swing.',
       p: { 'clock.bpm': 112, 'clock.swing': 20, 'drum.drive': 0.25, 'verb.mix': 0.12, 'out.level': 1.16 },
       sq: { k: 'X.....x...X..o..', s: '....X.......X..2', h: 'x.o.x.ox.ox.x.o4', c: '............x...', t: '..........x..x..', b: '.......o........' },
       c: [['drum.mix', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
     },
     {
-      name: 'SQNCR · Ratchets & Skips', cat: BASTL,
+      name: 'SQNCR · Ratchets & Skips', cat: DIGI,
       notes: 'Polymeter from per-instrument lengths (16/12/10/7/5/13), skipped steps, flams, late 32nds and ratchets ×2/×3/×4.',
       p: { 'clock.bpm': 104, 'drum.morph': 0.4, 'drum.tt': 0.65, 'drum.drive': 0.3, 'delay.time': 0.21, 'delay.fb': 0.3, 'delay.mix': 0.15, 'out.level': 0.9 },
       sq: { k: 'x...x..-x...x.2.', s: '..f...X.l..3', h: '4.x.2x.x-x', c: '..x.L..', t: 'x.l.o', b: 'x..d..x.-..x.' },
       c: [['drum.mix', 'delay.in'], ['delay.out', 'out.L']]
     },
     {
-      name: 'MONO FM · Acid Bass', cat: BASTL,
+      name: 'MONO FM · Acid Bass', cat: DIGI,
       notes: 'The MONO FM engine as a bassline: index swept by the function generator, feedback for grit, with a light beat.',
       p: {
         'clock.bpm': 124, 'clock.mult': 2,
@@ -624,8 +624,8 @@
         ['drum.mix', 'mix.in1'], ['lpg.out1', 'mix.in2'], ['mix.out', 'delay.in'], ['delay.out', 'out.L']]
     },
     {
-      name: 'POLY · Arp Strings', cat: BASTL,
-      notes: 'A latched chord in the Arpeggiator (SORTED order, two octaves) plays the 4-voice POLY engine directly.',
+      name: 'POLY · Arp Strings', cat: DIGI,
+      notes: 'A latched chord in the ARP (SORTED order, two octaves) plays the 4-voice POLY engine directly.',
       p: {
         'clock.bpm': 96, 'clock.mult': 2,
         'arp.algo': 3, 'arp.oct': 2, 'arp.latch': 1, 'arp.gate': 0.7,
@@ -638,8 +638,8 @@
       c: [['lfo1.bi', 'poly.cut'], ['poly.out', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
     },
     {
-      name: 'LFO · XOR Glitch', cat: BASTL,
-      notes: 'lfoExtended at audio rate: XOR bits swept by a second LFO, resolution steps and fold threshold make shifting 8-bit waveforms.',
+      name: 'LFO · XOR Glitch', cat: DIGI,
+      notes: 'The LFO at audio rate: XOR bits swept by a second LFO, resolution steps and fold threshold make shifting 8-bit waveforms.',
       p: {
         'lfo1.rate': 110, 'lfo1.wave': 1, 'lfo1.thres': 190, 'lfo1.tmode': 0, 'lfo1.res': 24,
         'lfo2.rate': 0.21, 'lfo2.wave': 2,
@@ -653,7 +653,7 @@
         ['lpg.out1', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
     },
     {
-      name: 'LFO · Flop Rhythms', cat: BASTL,
+      name: 'LFO · Flop Rhythms', cat: DIGI,
       notes: 'FLOP bits zero the LFO on chosen steps, turning one LFO into a rhythm of gates that strikes the LPG; the beat keeps time underneath.',
       p: {
         'clock.bpm': 110,
@@ -670,8 +670,8 @@
         ['drum.mix', 'mix.in1'], ['lpg.out1', 'mix.in2'], ['mix.out', 'delay.in'], ['delay.out', 'out.L']]
     },
     {
-      name: 'Tap Tempo Dub', cat: BASTL,
-      notes: 'Tap the tempo (TAP button or T key): the Tapper averages your taps, and the dub stabs and echoes follow.',
+      name: 'Tap Tempo Dub', cat: DIGI,
+      notes: 'Tap the tempo (TAP button or Enter): the clock averages your last taps, and the dub stabs and echoes follow.',
       p: {
         'clock.bpm': 76, 'clock.mult': 1,
         'drum.kt': 0.3, 'drum.kd': 0.6, 'drum.sd': 0.6, 'drum.hl': 0.3,
@@ -687,8 +687,8 @@
         ['drum.mix', 'mix.in1'], ['lpg.out1', 'mix.in2'], ['mix.out', 'delay.in'], ['delay.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
     },
     {
-      name: 'Mozzi 8-bit Chip', cat: BASTL,
-      notes: 'Trinity’s Mozzi heritage: square-wave arpeggios at 16384 Hz and 4 bits, with a crunchy kit.',
+      name: '8-bit Chip', cat: DIGI,
+      notes: 'Square-wave arpeggios through a 16384 Hz, 4-bit converter, with a crunchy kit.',
       p: {
         'clock.bpm': 140, 'clock.mult': 2,
         'arp.algo': 0, 'arp.oct': 2, 'arp.latch': 1, 'arp.gate': 0.6,
@@ -708,7 +708,7 @@
     // ═══════════════════════════════ NOISE & EXPERIMENTAL ═══════════════════════════════
     {
       name: 'Xorshift Choir', cat: NOISE,
-      notes: 'The 16-bit xorshift of bastlRandom has a short cycle — at audio rates it sings. Resonant filters pick out a slow chord.',
+      notes: 'The DIGI noise is a 16-bit xorshift with a short cycle — at audio rates it sings. Resonant filters pick out a slow chord.',
       p: {
         'clock.bpm': 50, 'clock.mult': 0,
         'noise.rate': 9000,
@@ -719,7 +719,7 @@
         'mix.l1': 0.9, 'mix.l2': 0.4,
         'verb.size': 0.9, 'verb.decay': 0.75, 'verb.mix': 0.45, 'out.level': 0.47
       },
-      c: [['noise.bastl', 'filt.in'], ['seq.cv', 'filt.voct'], ['filt.bp', 'mix.in1'], ['noise.bastl', 'lpg.in1'], ['lfo1.uni', 'lpg.cv1'], ['lpg.out1', 'mix.in2'],
+      c: [['noise.digi', 'filt.in'], ['seq.cv', 'filt.voct'], ['filt.bp', 'mix.in1'], ['noise.digi', 'lpg.in1'], ['lfo1.uni', 'lpg.cv1'], ['lpg.out1', 'mix.in2'],
         ['mix.out', 'verb.inL'], ['verb.L', 'out.L'], ['verb.R', 'out.R']]
     },
     {

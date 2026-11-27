@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Master of All</title>
-  <meta name="description" content="A west-coast patchable browser modular built from every part of the Bastl Instruments library: complex oscillator, low pass gates, function generators, drum sequencer, LFOs and more.">
+  <meta name="description" content="A west-coast patchable browser modular: complex oscillator, vactrol low pass gates, function generators, FM and poly voices, a drum machine with a 6-track sequencer, bit-twisting LFOs, tape echo and 24-bit recording.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 </head>
 <body>
   <header id="top">
-    <div class="brand"><h1>MASTER<b>·</b>OF<b>·</b>ALL</h1><small>west coast · bastl · 24-bit</small></div>
+    <div class="brand"><h1>MASTER<b>·</b>OF<b>·</b>ALL</h1><small>west coast · 24-bit</small></div>
     <div class="grp">
       <button class="btn power" id="power">▶ POWER</button>
       <button class="btn" id="panic" title="All notes off + reset all module states (Esc)">PANIC</button>
@@ -56,7 +56,7 @@
   <div id="splash">
     <div class="card">
       <h2>MASTER<b>·</b>OF<b>·</b>ALL</h2>
-      <p>A west-coast patchable modular built from every part of the Bastl Instruments library: the Trinity MONO FM, POLY and DRUM engines, the 6-track SQNCR, lfoExtended, the EarLevel exponential envelopes, the arpeggiator, tap tempo and the uncertainty buffer. It adds a complex oscillator, vactrol low pass gates, tape echo and reverb.</p>
+      <p>A west-coast patchable modular synthesizer in the browser: a complex oscillator, vactrol low pass gates, function generators, MONO FM and POLY voices, a 6-voice drum machine with a 6-track sequencer, bit-twisting LFOs, an arpeggiator, a tap-tempo clock, an uncertainty source, tape echo and reverb.</p>
       <p>46 presets, including a bank of 25 homages to the Latin American electronic and noise scenes of the 70s and 80s, plus a RANDOM button that builds new patches. Drag from any jack to another to patch. Save your own presets and record 24-bit WAV.</p>
       <button class="btn big" id="splashPower">▶ POWER ON</button>
     </div>
@@ -75,7 +75,7 @@
       <tr><td>Keys</td><td><kbd>A W S E D F T G Y H U J K O L P ;</kbd> play notes · <kbd>Z</kbd>/<kbd>X</kbd> octave · <kbd>1</kbd>–<kbd>6</kbd> drum pads · <kbd>Space</kbd> run/stop · <kbd>Enter</kbd> tap tempo · <kbd>R</kbd> randomize · <kbd>Shift</kbd>+<kbd>R</kbd> mutate · <kbd>Esc</kbd> panic</td></tr>
       <tr><td>⚄ RANDOM</td><td>builds a new, always-routed patch: a voice with a pitch source, optional processors, a low pass gate (pinged or enveloped), an optional second layer, echo/reverb and 2–5 modulation cables, plus random drum patterns and knobs within safe limits. Shift-click mutates the current patch (≈30% of knobs nudged). The OUTPUT level then auto-adjusts to about −16 dBFS. Like what you hear? Press SAVE.</td></tr>
       <tr><td>Touch plate</td><td>press lower on a pad for more pressure (PRESS output)</td></tr>
-      <tr><td>MIDI</td><td>notes from all inputs; MIDI clock / start / stop drive the CLOCK (MIDIStepper); CC1 = pressure</td></tr>
+      <tr><td>MIDI</td><td>notes from all inputs; MIDI clock / start / stop drive the CLOCK; CC1 = pressure</td></tr>
     </table>
     <h3>SQNCR (drum sequencer)</h3>
     <p>6 instruments × 8 patterns × 64 steps × 4 substeps (64th notes). Choose an edit mode, then click steps: <b>HIT</b>, <b>ACC</b>ent, <b>SOFT</b>, <b>RATCH</b>et (×2/×3/×4 64ths), <b>SHIFT</b> (late 32nd, 64th drag, flam), <b>MUTE</b> (keeps the notes), <b>SKIP</b> (inactive steps are jumped over). Each track has its own length (drag the number) for polymeters. T/G toggles TRIGGER or GATE events. Hold <b>LOOP</b> to stutter the current step. <b>REC</b> records the pads/keys 1–6 live with the chosen quantization. <b>MOM</b> makes pattern buttons momentary.</p>
@@ -83,7 +83,7 @@
     <p>● REC captures the master output after the limiter, sample-accurately inside the audio thread, and saves a 24-bit stereo WAV with TPDF dither at the device sample rate. Takes stay in the TAKES menu until you reload the page.</p>
     <h3>SIGNAL CHAIN SAFETY</h3>
     <p>The whole rack runs per-sample in one AudioWorklet with no allocations in the audio loop. Parameters are smoothed, so knob moves don't make zipper noise. Oscillators are band-limited (PolyBLEP, 2× oversampled folding and FM), DC blockers sit on every output, and the OUTPUT has a true look-ahead peak limiter (ceiling −0.5 dBFS) so nothing clips. A NaN guard resets the engine if a patch ever goes unstable. Preset changes fade out and back in. If your machine stutters, set the buffer to <b>safe</b>.</p>
-    <h3>MODULES ↔ BASTL LIBRARY</h3>
+    <h3>MODULES</h3>
     <table id="libTable"></table>
   </div></div>
   <div id="toast"></div>

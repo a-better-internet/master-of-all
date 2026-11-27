@@ -79,11 +79,14 @@
       var d = key.indexOf('.'), m = key.slice(0, d), k = key.slice(d + 1);
       if (st.params[m] && st.params[m][k] !== undefined) st.params[m][k] = p[key];
     });
-    (pr.c || []).forEach(function (c) { if (validCable(c)) st.cables.push([c[0], c[1]]); });
+    (pr.c || []).forEach(function (c) { c = fixCable(c); if (validCable(c)) st.cables.push(c); });
     st.arp = (pr.arp || []).slice(0, 20);
     return st;
   }
 
+  // renamed jacks from older saved patches
+  var ALIAS = { 'noise.bastl': 'noise.digi' };
+  function fixCable(c) { return [ALIAS[c[0]] || c[0], ALIAS[c[1]] || c[1]]; }
   function validCable(c) {
     if (!c || c.length < 2) return false;
     var a = String(c[0]).split('.'), b = String(c[1]).split('.');
@@ -132,7 +135,7 @@
         if (st.params[m][k] !== undefined && isFinite(v)) st.params[m][k] = v;
       });
     });
-    (o.cables || []).forEach(function (c) { if (validCable(c)) st.cables.push([c[0], c[1]]); });
+    (o.cables || []).forEach(function (c) { c = fixCable(c); if (validCable(c)) st.cables.push(c); });
     if (o.sq) {
       st.sq.subs = unb64(o.sq.subs || '', SIZE);
       st.sq.mute = unb64(o.sq.mute || '', SIZE);
@@ -245,22 +248,22 @@
       st.arp = st.arp.filter(function (x, j, a) { return a.indexOf(x) === j; });
       set('arp.latch', 1);
     }
-    var voice = pick(['cplx.out', 'cplx.out', 'cplx.sine', 'cplx.mod', 'fmv.out', 'fmv.out', 'poly.out', 'lfo1.bi', 'noise.bastl']);
+    var voice = pick(['cplx.out', 'cplx.out', 'cplx.sine', 'cplx.mod', 'fmv.out', 'fmv.out', 'poly.out', 'lfo1.bi', 'noise.digi']);
     story.push(voice.split('.')[0].toUpperCase());
     if (voice.indexOf('cplx') === 0) { cab(pitchSrc, 'cplx.pitch'); if (voice === 'cplx.mod') { set('cplx.mtrack', 1); set('cplx.mfreq', P.cplx.pfreq * pick([0.5, 1, 1, 2])); } }
     if (voice === 'fmv.out') cab(pitchSrc, 'fmv.pitch');
     if (voice === 'poly.out') { set('poly.src', 1); set('arp.latch', 1); if (!st.arp.length) st.arp = [57, 60, 64, 67]; pitchSrc = 'arp.pitch'; set('poly.atk', rr(2, 40)); }
     if (voice === 'lfo1.bi') { set('lfo1.rate', +rr(60, 400).toFixed(1)); set('lfo1.wave', pick([0, 1])); cab(pitchSrc, 'lfo1.rate'); }
-    if (voice === 'noise.bastl') { set('noise.rate', +rr(800, 12000).toFixed(0)); }
+    if (voice === 'noise.digi') { set('noise.rate', +rr(800, 12000).toFixed(0)); }
     var trig = trigFor[pitchSrc] || 'seq.trig';
     if (ch(0.25)) trig = pick(['rand.gate', 'sqncr.t' + (1 + Math.floor(rr(0, 6))), 'clock.mult', 'seq.gate']);
     var node = voice;
     var procs = ['fold', 'filt', 'ring', 'bits'].filter(function () { return ch(0.3); });
-    if (voice === 'noise.bastl' && procs.indexOf('filt') < 0) procs.unshift('filt');
+    if (voice === 'noise.digi' && procs.indexOf('filt') < 0) procs.unshift('filt');
     procs.forEach(function (pm) {
       var ins = { fold: 'fold.in', filt: 'filt.in', ring: 'ring.a', bits: 'bits.in' }[pm];
       var outs = { fold: 'fold.out', filt: pick(['filt.lp', 'filt.lp', 'filt.lp', 'filt.bp']), ring: 'ring.out', bits: 'bits.out' }[pm];
-      if (pm === 'filt' && voice === 'noise.bastl') { set('filt.res', rr(0.8, 0.95)); cab(pitchSrc, 'filt.voct'); outs = 'filt.bp'; }
+      if (pm === 'filt' && voice === 'noise.digi') { set('filt.res', rr(0.8, 0.95)); cab(pitchSrc, 'filt.voct'); outs = 'filt.bp'; }
       if (cab(node, ins)) { node = outs; story.push(pm.toUpperCase()); }
     });
     cab(node, 'lpg.in1');

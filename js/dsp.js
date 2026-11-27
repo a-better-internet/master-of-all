@@ -9,8 +9,7 @@
  *  - only modules that can reach the OUTPUT (plus a few cheap control modules
  *    that drive the UI) are computed, which keeps the CPU budget low
  *
- * Algorithms ported/adapted from the Bastl Instruments library (CC BY-SA 3.0,
- * Vaclav Pelousek, Martin Baar et al.) and Nigel Redmon's EarLevel ADSR.
+ * Portions adapted from third-party CC BY-SA 3.0 code — see NOTICE.md.
  *
  * This function is stringified and loaded as a Blob module, so it must be
  * self-contained. It expects `MASTER_SPECS` to exist in the global scope.
@@ -56,20 +55,20 @@ function MASTER_DSP() {
   }
   function brnd() { return rnd() * 2 - 1; }
 
-  // bastlRandom::byte() — 16-bit xorshift exactly as in random.cpp
-  var bastlSeed = 42;
-  function bastlByte() {
-    var s = bastlSeed;
+  // 16-bit xorshift byte generator (its short cycle gives the DIGI noise its pitch)
+  var xsSeed = 42;
+  function xsByte() {
+    var s = xsSeed;
     s ^= (s << 7) & 0xffff;
     s ^= s >> 11;
     s ^= (s << 2) & 0xffff;
-    bastlSeed = s;
+    xsSeed = s;
     return s >> 8;
   }
-  // bastlRandom::range() — "not equally distributed", kept as in the original
-  function bastlRange(min, max) {
+  // ranged pick from the 16-bit xorshift (intentionally slightly uneven)
+  function xsRange(min, max) {
     var n = max - min + 1;
-    return ((Math.min(bastlByte(), 254) * n) >> 8) + min;
+    return ((Math.min(xsByte(), 254) * n) >> 8) + min;
   }
 
   function Trig() { this.h = 0; }
@@ -140,7 +139,7 @@ function MASTER_DSP() {
   };
   DCBlock.prototype.reset = function () { this.x1 = this.y1 = 0; };
 
-  // EarLevel exponential ADSR with Bastl's HOLD and LOOP extensions (expADSR.cpp)
+  // exponential ADSR (EarLevel design) with HOLD and LOOP extensions
   function ADSR() {
     this.state = 0; this.out = 0; this.hold = false; this.holdVal = 0; this.holdCnt = 0; this.loop = false;
     this.tA = 0.3; this.tDR = 0.0001; this.aR = 1; this.dR = 1; this.rR = 1; this.sus = 1; this.ev = 0;
@@ -257,7 +256,7 @@ function MASTER_DSP() {
   function inherit(C) { C.prototype = Object.create(Mod.prototype); C.prototype.constructor = C; return C; }
 
   // ─────────────────────────────── CLOCK ───────────────────────────────
-  // BastlMetronome (16 bastl steps per beat), Tapper (4-tap moving average with
+  // Metronome (16 internal steps per beat), Tapper (4-tap moving average with
   // relative-deviation reset), MIDIStepper (external clock drives the steps and
   // the metronome stops after the next step until the next pulse arrives).
 
@@ -605,7 +604,7 @@ function MASTER_DSP() {
           if (this.up) { if (this.idx + 1 >= n) { this.up = false; this.idx--; } else this.idx++; }
           else { if (this.idx - 1 < lo) { this.up = true; this.idx++; wrapped = true; } else this.idx--; }
           break;
-        case 4: this.idx = bastlRange(lo, n - 1); if (bastlByte() < 64) wrapped = true; break;
+        case 4: this.idx = xsRange(lo, n - 1); if (xsByte() < 64) wrapped = true; break;
       }
       if (wrapped) this.octv = (this.octv + 1) % maxOct;
     }
@@ -688,7 +687,7 @@ function MASTER_DSP() {
           else if (dir === 2) {
             if (this.dirUp) { if (this.step + 1 >= steps) { this.dirUp = false; this.step = Math.max(0, this.step - 1); } else this.step++; }
             else { if (this.step - 1 < 0) { this.dirUp = true; this.step = Math.min(steps - 1, 1); } else this.step--; }
-          } else this.step = bastlRange(0, steps - 1);
+          } else this.step = xsRange(0, steps - 1);
           if ((dir === 0 && this.step === 0) || (dir === 1 && this.step === steps - 1) || (dir === 2 && this.step === 0 && prev !== 0)) this.eocT = ms(3);
         }
         if (this.step >= steps) this.step = 0;
@@ -1014,10 +1013,10 @@ function MASTER_DSP() {
     this.b2 = 0.57000 * this.b2 + w * 1.0526913;
     var pink = (this.b0 + this.b1 + this.b2 + w * 0.1848) * 0.22;
     this.ph += p[I.rate] * ISR;
-    if (this.ph >= 1) { this.ph -= Math.floor(this.ph); this.bv = bastlByte() / 127.5 - 1; }
+    if (this.ph >= 1) { this.ph -= Math.floor(this.ph); this.bv = xsByte() / 127.5 - 1; }
     if (rnd() < p[I.dens] * ISR) this.cr = brnd() > 0 ? 1 : -1;
     var cr = this.cr; this.cr *= 0.82; if (Math.abs(this.cr) < 1e-5) this.cr = 0;
-    b[O.white] = w * 0.7; b[O.pink] = clamp(pink, -1, 1); b[O.bastl] = this.bv * 0.7; b[O.crack] = cr;
+    b[O.white] = w * 0.7; b[O.pink] = clamp(pink, -1, 1); b[O.digi] = this.bv * 0.7; b[O.crack] = cr;
   };
 
   // ─────────────────────────────── LFO (lfoExtended) ───────────────────────────────
@@ -1034,7 +1033,7 @@ function MASTER_DSP() {
     Mod.call(this, s, e);
     this.ph = 0; this.out = 0; this.lastStep = 0; this.lastUnsk = 0; this.slope = 0; this.until = 0; this.rw = 128;
     this.buf = new Float64Array(32); this.bpos = 0; this.rst = new Trig(); this.eocT = 0;
-    this.target = (bastlByte() << 8) | bastlByte(); this.buf.fill(this.target);
+    this.target = (xsByte() << 8) | xsByte(); this.buf.fill(this.target);
   });
   Lfo.prototype.bufAvg = function (sm) {
     var n = 32 - mappedBufferLen(sm), idx = this.bpos - 1, sum = 0;
@@ -1053,7 +1052,7 @@ function MASTER_DSP() {
     var since = (step - this.lastStep) & 255;
     var o;
     var flop = p[I.flop] | 0;
-    if (wave === 3 && wrapped) this.target = (bastlByte() << 8) | bastlByte();
+    if (wave === 3 && wrapped) this.target = (xsByte() << 8) | xsByte();
     // random slope / smooth random evolve once per 8-bit step (as their getValue() calls)
     if (since) {
       this.lastStep = step;
@@ -1061,8 +1060,8 @@ function MASTER_DSP() {
         this.until -= since;
         if (this.until <= 0) {
           var mx = 3;
-          this.slope = bastlRange(0, 2 * mx) - mx;
-          this.until = bastlRange(10, 40);
+          this.slope = xsRange(0, 2 * mx) - mx;
+          this.until = xsRange(10, 40);
         }
         var nv = this.rw + this.slope * since;
         if (fold) { if (nv > thres || nv < 0) { this.slope = -this.slope; nv = clamp(nv, 0, thres); } }
@@ -1138,7 +1137,7 @@ function MASTER_DSP() {
 
   var Rand = inherit(function Rand(s, e) {
     Mod.call(this, s, e);
-    this.buf = new Float64Array(32); for (var i = 0; i < 32; i++) this.buf[i] = bastlByte();
+    this.buf = new Float64Array(32); for (var i = 0; i < 32; i++) this.buf[i] = xsByte();
     this.clk = new Trig(); this.since = SR; this.period = SR / 2;
     this.from = 128; this.to = 128; this.n = 0; this.nTot = 1;
     this.sbuf = new Float64Array(32); this.ssum = 0; this.spos = 0; this.scnt = 0;
@@ -1324,7 +1323,7 @@ function MASTER_DSP() {
     b[O.out] = y; b[O.inv] = -y;
   };
 
-  // ─────────────────────────────── MOZZI LO-FI ───────────────────────────────
+  // ─────────────────────────────── LO-FI ───────────────────────────────
 
   var Bits = inherit(function Bits(s, e) { Mod.call(this, s, e); this.ph = 0; this.hold = 0; });
   Bits.prototype.tick = function () {
